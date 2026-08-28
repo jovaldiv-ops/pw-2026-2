@@ -36,8 +36,24 @@ Crear proyecto GIT
     
 Loguearse
 
-    > 
-    > 
+    > git config --global user.name "Tu Nombre"
+    > git config --global user.email "tu@email.com"
+
+Crear rama
+
+    > git checkout -b feature/prueba
+
+Ver ramas
+
+    > git branch
+
+Cambiar rama
+
+    > git checkout #nombre_rama
+
+Cambiar a commit
+
+    > git reset --hard #commit
 
 Instalar dependencias:
 
