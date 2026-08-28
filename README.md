@@ -55,6 +55,12 @@ Cambiar a commit
 
     > git reset --hard #commit
 
+Cambiar remote
+
+    > git remote set-url origin git@github.com:usuario/repositorio.git
+
+    git remote set-url origin git@github.com:jovaldiv-ops/pw-2026-2.git
+
 Instalar dependencias:
 
     npm install
