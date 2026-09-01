@@ -2,18 +2,23 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "public/dist",
-  "functions": {
-    "api/index.js": {
-      "includeFiles": [
-        "public/dist/**",
-        "views/**"
-      ]
+  "builds": [
+    {
+      "src": "public/dist/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["public/dist/**", "views/**", "node_modules/pg/**"]
+      }
     }
-  },
+  ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "src": "/dist/(.*)",
+      "dest": "/public/dist/$1"
     },
     {
       "src": "/(.*)",
