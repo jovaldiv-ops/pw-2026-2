@@ -45,6 +45,15 @@ export default function SideBarEnterprise() {
             Bandeja de postulantes
           </NavLink>
 
+          <NavLink
+            to="/enterprise/carrers"
+            className={({ isActive }) =>
+              `enterprise-sidebar-link ${isActive ? 'active' : ''}`
+            }
+          >
+            <span className="enterprise-sidebar-bullet"></span>
+            Gestionar Carreras
+          </NavLink>
         </nav>
       </div>
 

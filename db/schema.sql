@@ -1,7 +1,7 @@
 \restrict dbmate
 
--- Dumped from database version 16.14 (Ubuntu 16.14-0ubuntu0.24.04.1)
--- Dumped by pg_dump version 16.14 (Ubuntu 16.14-0ubuntu0.24.04.1)
+-- Dumped from database version 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+-- Dumped by pg_dump version 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,27 +19,46 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: common_details; Type: TABLE; Schema: public; Owner: -
--- 
+-- Name: applications; Type: TABLE; Schema: public; Owner: -
+--
 
-CREATE TABLE public.common_details (
+CREATE TABLE public.applications (
     id integer NOT NULL,
-    overall integer,
-    velocity integer,
-    shooting integer,
-    passing integer,
-    dribbling integer,
-    defending integer,
-    physicality integer,
-    player_id integer NOT NULL
+    title character varying(40) NOT NULL,
+    description text,
+    benefits text,
+    functions text,
+    vacancies integer DEFAULT 1,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    published timestamp without time zone,
+    email_notification boolean DEFAULT false,
+    closed timestamp without time zone,
+    salarry numeric(10,2),
+    is_draft boolean DEFAULT true,
+    modality_id integer,
+    sementer_id integer,
+    district_id integer,
+    workday_id integer,
+    enterprise_id integer NOT NULL
 );
 
 
 --
--- Name: common_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: applications_carrers; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.common_details_id_seq
+CREATE TABLE public.applications_carrers (
+    id integer NOT NULL,
+    application_id integer NOT NULL,
+    carrer_id integer NOT NULL
+);
+
+
+--
+-- Name: applications_carrers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.applications_carrers_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -49,27 +68,17 @@ CREATE SEQUENCE public.common_details_id_seq
 
 
 --
--- Name: common_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: applications_carrers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.common_details_id_seq OWNED BY public.common_details.id;
-
-
---
--- Name: foots; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.foots (
-    id integer NOT NULL,
-    name character varying(6)
-);
+ALTER SEQUENCE public.applications_carrers_id_seq OWNED BY public.applications_carrers.id;
 
 
 --
--- Name: foots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: applications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.foots_id_seq
+CREATE SEQUENCE public.applications_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -79,32 +88,28 @@ CREATE SEQUENCE public.foots_id_seq
 
 
 --
--- Name: foots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.foots_id_seq OWNED BY public.foots.id;
+ALTER SEQUENCE public.applications_id_seq OWNED BY public.applications.id;
 
 
 --
--- Name: goalkeeper_details; Type: TABLE; Schema: public; Owner: -
+-- Name: applications_skills; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.goalkeeper_details (
+CREATE TABLE public.applications_skills (
     id integer NOT NULL,
-    diving integer,
-    handling integer,
-    kicking integer,
-    positioning integer,
-    reflexes integer,
-    player_id integer NOT NULL
+    application_id integer NOT NULL,
+    skill_id integer NOT NULL
 );
 
 
 --
--- Name: goalkeeper_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: applications_skills_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.goalkeeper_details_id_seq
+CREATE SEQUENCE public.applications_skills_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -114,28 +119,31 @@ CREATE SEQUENCE public.goalkeeper_details_id_seq
 
 
 --
--- Name: goalkeeper_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: applications_skills_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.goalkeeper_details_id_seq OWNED BY public.goalkeeper_details.id;
+ALTER SEQUENCE public.applications_skills_id_seq OWNED BY public.applications_skills.id;
 
 
 --
--- Name: leagues; Type: TABLE; Schema: public; Owner: -
+-- Name: applications_students; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.leagues (
+CREATE TABLE public.applications_students (
     id integer NOT NULL,
-    name character varying(30),
-    nation_id integer
+    application_id integer NOT NULL,
+    student_id integer NOT NULL,
+    status_applications_student_id integer,
+    notes text,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
 --
--- Name: leagues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: applications_students_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.leagues_id_seq
+CREATE SEQUENCE public.applications_students_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -145,27 +153,39 @@ CREATE SEQUENCE public.leagues_id_seq
 
 
 --
--- Name: leagues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: applications_students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.leagues_id_seq OWNED BY public.leagues.id;
+ALTER SEQUENCE public.applications_students_id_seq OWNED BY public.applications_students.id;
 
 
 --
--- Name: nations; Type: TABLE; Schema: public; Owner: -
+-- Name: applications_students_reviews; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.nations (
+CREATE TABLE public.applications_students_reviews (
     id integer NOT NULL,
-    name character varying(40)
+    applications_students_reviews integer,
+    points integer,
+    enviroment integer,
+    learning integer,
+    work_load integer,
+    title character varying(50),
+    comment text,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    start timestamp without time zone,
+    end_date timestamp without time zone,
+    anonimous boolean DEFAULT false,
+    CONSTRAINT applications_students_reviews_points_check CHECK (((points >= 1) AND (points <= 5)))
 );
 
 
 --
--- Name: nations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: applications_students_reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.nations_id_seq
+CREATE SEQUENCE public.applications_students_reviews_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -175,27 +195,27 @@ CREATE SEQUENCE public.nations_id_seq
 
 
 --
--- Name: nations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: applications_students_reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.nations_id_seq OWNED BY public.nations.id;
+ALTER SEQUENCE public.applications_students_reviews_id_seq OWNED BY public.applications_students_reviews.id;
 
 
 --
--- Name: play_styles; Type: TABLE; Schema: public; Owner: -
+-- Name: carrers; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.play_styles (
+CREATE TABLE public.carrers (
     id integer NOT NULL,
-    name character varying(30)
+    name character varying(30) NOT NULL
 );
 
 
 --
--- Name: play_styles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: carrers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.play_styles_id_seq
+CREATE SEQUENCE public.carrers_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -205,39 +225,27 @@ CREATE SEQUENCE public.play_styles_id_seq
 
 
 --
--- Name: play_styles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: carrers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.play_styles_id_seq OWNED BY public.play_styles.id;
+ALTER SEQUENCE public.carrers_id_seq OWNED BY public.carrers.id;
 
 
 --
--- Name: players; Type: TABLE; Schema: public; Owner: -
+-- Name: districts; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.players (
+CREATE TABLE public.districts (
     id integer NOT NULL,
-    name character varying(60),
-    rank integer,
-    weak_foot integer,
-    skill_moves integer,
-    heigth integer,
-    weight integer,
-    age integer,
-    url character varying(120),
-    foot_id integer NOT NULL,
-    sex_id integer NOT NULL,
-    position_id integer NOT NULL,
-    nation_id integer NOT NULL,
-    team_id integer NOT NULL
+    name character varying(40) NOT NULL
 );
 
 
 --
--- Name: players_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: districts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.players_id_seq
+CREATE SEQUENCE public.districts_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -247,28 +255,40 @@ CREATE SEQUENCE public.players_id_seq
 
 
 --
--- Name: players_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: districts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.players_id_seq OWNED BY public.players.id;
+ALTER SEQUENCE public.districts_id_seq OWNED BY public.districts.id;
 
 
 --
--- Name: players_play_styles; Type: TABLE; Schema: public; Owner: -
+-- Name: enterprises; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.players_play_styles (
+CREATE TABLE public.enterprises (
     id integer NOT NULL,
-    play_style_id integer NOT NULL,
-    player_id integer NOT NULL
+    name character varying(60) NOT NULL,
+    ruc character varying(11) NOT NULL,
+    email character varying(45) NOT NULL,
+    phone character varying(15),
+    website_url character varying(100),
+    description text,
+    address character varying(100),
+    picture_url character varying(100),
+    district_id integer,
+    sector_id integer,
+    size_id integer,
+    user_id integer,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
 --
--- Name: players_play_styles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: enterprises_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.players_play_styles_id_seq
+CREATE SEQUENCE public.enterprises_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -278,28 +298,32 @@ CREATE SEQUENCE public.players_play_styles_id_seq
 
 
 --
--- Name: players_play_styles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: enterprises_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.players_play_styles_id_seq OWNED BY public.players_play_styles.id;
+ALTER SEQUENCE public.enterprises_id_seq OWNED BY public.enterprises.id;
 
 
 --
--- Name: players_positions; Type: TABLE; Schema: public; Owner: -
+-- Name: experiences; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.players_positions (
+CREATE TABLE public.experiences (
     id integer NOT NULL,
-    position_id integer NOT NULL,
-    player_id integer NOT NULL
+    name character varying(60) NOT NULL,
+    enterprise character varying(60) NOT NULL,
+    description text,
+    start_date date NOT NULL,
+    end_date date,
+    student_id integer NOT NULL
 );
 
 
 --
--- Name: players_positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: experiences_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.players_positions_id_seq
+CREATE SEQUENCE public.experiences_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -309,27 +333,29 @@ CREATE SEQUENCE public.players_positions_id_seq
 
 
 --
--- Name: players_positions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: experiences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.players_positions_id_seq OWNED BY public.players_positions.id;
+ALTER SEQUENCE public.experiences_id_seq OWNED BY public.experiences.id;
 
 
 --
--- Name: positions; Type: TABLE; Schema: public; Owner: -
+-- Name: links; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.positions (
+CREATE TABLE public.links (
     id integer NOT NULL,
-    name character varying(10)
+    name character varying(30) NOT NULL,
+    url character varying(100) NOT NULL,
+    student_id integer NOT NULL
 );
 
 
 --
--- Name: positions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.positions_id_seq
+CREATE SEQUENCE public.links_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -339,10 +365,104 @@ CREATE SEQUENCE public.positions_id_seq
 
 
 --
--- Name: positions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.positions_id_seq OWNED BY public.positions.id;
+ALTER SEQUENCE public.links_id_seq OWNED BY public.links.id;
+
+
+--
+-- Name: logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.logs (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    description character varying(100) NOT NULL,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+--
+-- Name: logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.logs_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.logs_id_seq OWNED BY public.logs.id;
+
+
+--
+-- Name: modalities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.modalities (
+    id integer NOT NULL,
+    name character varying(40) NOT NULL
+);
+
+
+--
+-- Name: modalities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.modalities_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: modalities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.modalities_id_seq OWNED BY public.modalities.id;
+
+
+--
+-- Name: profiles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.profiles (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+--
+-- Name: profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.profiles_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.profiles_id_seq OWNED BY public.profiles.id;
 
 
 --
@@ -355,20 +475,20 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: sexs; Type: TABLE; Schema: public; Owner: -
+-- Name: semesters; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.sexs (
+CREATE TABLE public.semesters (
     id integer NOT NULL,
-    name character varying(7)
+    name character varying(30) NOT NULL
 );
 
 
 --
--- Name: sexs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: semesters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.sexs_id_seq
+CREATE SEQUENCE public.semesters_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -378,28 +498,27 @@ CREATE SEQUENCE public.sexs_id_seq
 
 
 --
--- Name: sexs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: semesters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.sexs_id_seq OWNED BY public.sexs.id;
+ALTER SEQUENCE public.semesters_id_seq OWNED BY public.semesters.id;
 
 
 --
--- Name: teams; Type: TABLE; Schema: public; Owner: -
+-- Name: skill_levels; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.teams (
+CREATE TABLE public.skill_levels (
     id integer NOT NULL,
-    name character varying(40),
-    league_id integer NOT NULL
+    name character varying(30) NOT NULL
 );
 
 
 --
--- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: skill_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.teams_id_seq
+CREATE SEQUENCE public.skill_levels_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -409,174 +528,506 @@ CREATE SEQUENCE public.teams_id_seq
 
 
 --
--- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: skill_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.teams_id_seq OWNED BY public.teams.id;
-
-
---
--- Name: common_details id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.common_details ALTER COLUMN id SET DEFAULT nextval('public.common_details_id_seq'::regclass);
+ALTER SEQUENCE public.skill_levels_id_seq OWNED BY public.skill_levels.id;
 
 
 --
--- Name: foots id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: skills; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.foots ALTER COLUMN id SET DEFAULT nextval('public.foots_id_seq'::regclass);
-
-
---
--- Name: goalkeeper_details id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.goalkeeper_details ALTER COLUMN id SET DEFAULT nextval('public.goalkeeper_details_id_seq'::regclass);
+CREATE TABLE public.skills (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL
+);
 
 
 --
--- Name: leagues id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: skills_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.leagues ALTER COLUMN id SET DEFAULT nextval('public.leagues_id_seq'::regclass);
-
-
---
--- Name: nations id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.nations ALTER COLUMN id SET DEFAULT nextval('public.nations_id_seq'::regclass);
-
-
---
--- Name: play_styles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.play_styles ALTER COLUMN id SET DEFAULT nextval('public.play_styles_id_seq'::regclass);
+CREATE SEQUENCE public.skills_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
--- Name: players id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: skills_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players ALTER COLUMN id SET DEFAULT nextval('public.players_id_seq'::regclass);
-
-
---
--- Name: players_play_styles id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players_play_styles ALTER COLUMN id SET DEFAULT nextval('public.players_play_styles_id_seq'::regclass);
+ALTER SEQUENCE public.skills_id_seq OWNED BY public.skills.id;
 
 
 --
--- Name: players_positions id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: status_applications_students; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players_positions ALTER COLUMN id SET DEFAULT nextval('public.players_positions_id_seq'::regclass);
-
-
---
--- Name: positions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.positions ALTER COLUMN id SET DEFAULT nextval('public.positions_id_seq'::regclass);
+CREATE TABLE public.status_applications_students (
+    id integer NOT NULL,
+    name character varying(30) NOT NULL
+);
 
 
 --
--- Name: sexs id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: status_applications_students_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sexs ALTER COLUMN id SET DEFAULT nextval('public.sexs_id_seq'::regclass);
-
-
---
--- Name: teams id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.teams ALTER COLUMN id SET DEFAULT nextval('public.teams_id_seq'::regclass);
-
-
---
--- Name: common_details common_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.common_details
-    ADD CONSTRAINT common_details_pkey PRIMARY KEY (id);
+CREATE SEQUENCE public.status_applications_students_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
--- Name: foots foots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: status_applications_students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.foots
-    ADD CONSTRAINT foots_pkey PRIMARY KEY (id);
-
-
---
--- Name: goalkeeper_details goalkeeper_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.goalkeeper_details
-    ADD CONSTRAINT goalkeeper_details_pkey PRIMARY KEY (id);
+ALTER SEQUENCE public.status_applications_students_id_seq OWNED BY public.status_applications_students.id;
 
 
 --
--- Name: leagues leagues_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: students; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.leagues
-    ADD CONSTRAINT leagues_pkey PRIMARY KEY (id);
-
-
---
--- Name: nations nations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.nations
-    ADD CONSTRAINT nations_pkey PRIMARY KEY (id);
-
-
---
--- Name: play_styles play_styles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.play_styles
-    ADD CONSTRAINT play_styles_pkey PRIMARY KEY (id);
+CREATE TABLE public.students (
+    id integer NOT NULL,
+    names character varying(45) NOT NULL,
+    last_names character varying(100) NOT NULL,
+    email character varying(45) NOT NULL,
+    phone character varying(15),
+    district_id integer,
+    picture_url character varying(100),
+    summary text,
+    carrere_id integer,
+    sementer_id integer,
+    user_id integer,
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
 
 
 --
--- Name: players players_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: students_applications_saved; Type: TABLE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players
-    ADD CONSTRAINT players_pkey PRIMARY KEY (id);
-
-
---
--- Name: players_play_styles players_play_styles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players_play_styles
-    ADD CONSTRAINT players_play_styles_pkey PRIMARY KEY (id);
+CREATE TABLE public.students_applications_saved (
+    id integer NOT NULL,
+    created date DEFAULT CURRENT_DATE,
+    student_id integer NOT NULL,
+    application_id integer NOT NULL
+);
 
 
 --
--- Name: players_positions players_positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: students_applications_saved_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players_positions
-    ADD CONSTRAINT players_positions_pkey PRIMARY KEY (id);
+CREATE SEQUENCE public.students_applications_saved_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
 --
--- Name: positions positions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: students_applications_saved_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.positions
-    ADD CONSTRAINT positions_pkey PRIMARY KEY (id);
+ALTER SEQUENCE public.students_applications_saved_id_seq OWNED BY public.students_applications_saved.id;
+
+
+--
+-- Name: students_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.students_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.students_id_seq OWNED BY public.students.id;
+
+
+--
+-- Name: students_skills_skill_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.students_skills_skill_levels (
+    id integer NOT NULL,
+    student_id integer NOT NULL,
+    skill_id integer NOT NULL,
+    skill_level_id integer NOT NULL
+);
+
+
+--
+-- Name: students_skills_skill_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.students_skills_skill_levels_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: students_skills_skill_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.students_skills_skill_levels_id_seq OWNED BY public.students_skills_skill_levels.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    email character varying(45) NOT NULL,
+    password character varying(100) NOT NULL,
+    reset_token character varying(100),
+    created timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    profile_id integer
+);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: workdays; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workdays (
+    id integer NOT NULL,
+    name character varying(40) NOT NULL
+);
+
+
+--
+-- Name: workdays_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.workdays_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: workdays_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.workdays_id_seq OWNED BY public.workdays.id;
+
+
+--
+-- Name: applications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications ALTER COLUMN id SET DEFAULT nextval('public.applications_id_seq'::regclass);
+
+
+--
+-- Name: applications_carrers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_carrers ALTER COLUMN id SET DEFAULT nextval('public.applications_carrers_id_seq'::regclass);
+
+
+--
+-- Name: applications_skills id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_skills ALTER COLUMN id SET DEFAULT nextval('public.applications_skills_id_seq'::regclass);
+
+
+--
+-- Name: applications_students id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students ALTER COLUMN id SET DEFAULT nextval('public.applications_students_id_seq'::regclass);
+
+
+--
+-- Name: applications_students_reviews id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students_reviews ALTER COLUMN id SET DEFAULT nextval('public.applications_students_reviews_id_seq'::regclass);
+
+
+--
+-- Name: carrers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carrers ALTER COLUMN id SET DEFAULT nextval('public.carrers_id_seq'::regclass);
+
+
+--
+-- Name: districts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.districts ALTER COLUMN id SET DEFAULT nextval('public.districts_id_seq'::regclass);
+
+
+--
+-- Name: enterprises id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enterprises ALTER COLUMN id SET DEFAULT nextval('public.enterprises_id_seq'::regclass);
+
+
+--
+-- Name: experiences id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.experiences ALTER COLUMN id SET DEFAULT nextval('public.experiences_id_seq'::regclass);
+
+
+--
+-- Name: links id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.links ALTER COLUMN id SET DEFAULT nextval('public.links_id_seq'::regclass);
+
+
+--
+-- Name: logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.logs ALTER COLUMN id SET DEFAULT nextval('public.logs_id_seq'::regclass);
+
+
+--
+-- Name: modalities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.modalities ALTER COLUMN id SET DEFAULT nextval('public.modalities_id_seq'::regclass);
+
+
+--
+-- Name: profiles id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.profiles ALTER COLUMN id SET DEFAULT nextval('public.profiles_id_seq'::regclass);
+
+
+--
+-- Name: semesters id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.semesters ALTER COLUMN id SET DEFAULT nextval('public.semesters_id_seq'::regclass);
+
+
+--
+-- Name: skill_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.skill_levels ALTER COLUMN id SET DEFAULT nextval('public.skill_levels_id_seq'::regclass);
+
+
+--
+-- Name: skills id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.skills ALTER COLUMN id SET DEFAULT nextval('public.skills_id_seq'::regclass);
+
+
+--
+-- Name: status_applications_students id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.status_applications_students ALTER COLUMN id SET DEFAULT nextval('public.status_applications_students_id_seq'::regclass);
+
+
+--
+-- Name: students id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students ALTER COLUMN id SET DEFAULT nextval('public.students_id_seq'::regclass);
+
+
+--
+-- Name: students_applications_saved id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_applications_saved ALTER COLUMN id SET DEFAULT nextval('public.students_applications_saved_id_seq'::regclass);
+
+
+--
+-- Name: students_skills_skill_levels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_skills_skill_levels ALTER COLUMN id SET DEFAULT nextval('public.students_skills_skill_levels_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: workdays id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workdays ALTER COLUMN id SET DEFAULT nextval('public.workdays_id_seq'::regclass);
+
+
+--
+-- Name: applications_carrers applications_carrers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_carrers
+    ADD CONSTRAINT applications_carrers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: applications applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications
+    ADD CONSTRAINT applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: applications_skills applications_skills_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_skills
+    ADD CONSTRAINT applications_skills_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: applications_students applications_students_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students
+    ADD CONSTRAINT applications_students_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: applications_students_reviews applications_students_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students_reviews
+    ADD CONSTRAINT applications_students_reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: carrers carrers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carrers
+    ADD CONSTRAINT carrers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: districts districts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.districts
+    ADD CONSTRAINT districts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: enterprises enterprises_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enterprises
+    ADD CONSTRAINT enterprises_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: enterprises enterprises_ruc_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enterprises
+    ADD CONSTRAINT enterprises_ruc_key UNIQUE (ruc);
+
+
+--
+-- Name: experiences experiences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.experiences
+    ADD CONSTRAINT experiences_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: links links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT links_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: logs logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: modalities modalities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.modalities
+    ADD CONSTRAINT modalities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profiles profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.profiles
+    ADD CONSTRAINT profiles_pkey PRIMARY KEY (id);
 
 
 --
@@ -588,123 +1039,339 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: sexs sexs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: semesters semesters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.sexs
-    ADD CONSTRAINT sexs_pkey PRIMARY KEY (id);
-
-
---
--- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.teams
-    ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.semesters
+    ADD CONSTRAINT semesters_pkey PRIMARY KEY (id);
 
 
 --
--- Name: common_details common_details_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: skill_levels skill_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.common_details
-    ADD CONSTRAINT common_details_player_id_fkey FOREIGN KEY (player_id) REFERENCES public.players(id);
-
-
---
--- Name: goalkeeper_details goalkeeper_details_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.goalkeeper_details
-    ADD CONSTRAINT goalkeeper_details_player_id_fkey FOREIGN KEY (player_id) REFERENCES public.players(id);
+ALTER TABLE ONLY public.skill_levels
+    ADD CONSTRAINT skill_levels_pkey PRIMARY KEY (id);
 
 
 --
--- Name: leagues leagues_nation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: skills skills_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.leagues
-    ADD CONSTRAINT leagues_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES public.nations(id);
-
-
---
--- Name: players players_foot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players
-    ADD CONSTRAINT players_foot_id_fkey FOREIGN KEY (foot_id) REFERENCES public.foots(id);
+ALTER TABLE ONLY public.skills
+    ADD CONSTRAINT skills_pkey PRIMARY KEY (id);
 
 
 --
--- Name: players players_nation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: status_applications_students status_applications_students_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players
-    ADD CONSTRAINT players_nation_id_fkey FOREIGN KEY (nation_id) REFERENCES public.nations(id);
-
-
---
--- Name: players_play_styles players_play_styles_play_style_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players_play_styles
-    ADD CONSTRAINT players_play_styles_play_style_id_fkey FOREIGN KEY (play_style_id) REFERENCES public.play_styles(id);
+ALTER TABLE ONLY public.status_applications_students
+    ADD CONSTRAINT status_applications_students_pkey PRIMARY KEY (id);
 
 
 --
--- Name: players_play_styles players_play_styles_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: students_applications_saved students_applications_saved_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players_play_styles
-    ADD CONSTRAINT players_play_styles_player_id_fkey FOREIGN KEY (player_id) REFERENCES public.players(id);
-
-
---
--- Name: players players_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players
-    ADD CONSTRAINT players_position_id_fkey FOREIGN KEY (position_id) REFERENCES public.positions(id);
+ALTER TABLE ONLY public.students_applications_saved
+    ADD CONSTRAINT students_applications_saved_pkey PRIMARY KEY (id);
 
 
 --
--- Name: players_positions players_positions_player_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: students students_email_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players_positions
-    ADD CONSTRAINT players_positions_player_id_fkey FOREIGN KEY (player_id) REFERENCES public.players(id);
-
-
---
--- Name: players_positions players_positions_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players_positions
-    ADD CONSTRAINT players_positions_position_id_fkey FOREIGN KEY (position_id) REFERENCES public.positions(id);
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_email_key UNIQUE (email);
 
 
 --
--- Name: players players_sex_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: students students_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.players
-    ADD CONSTRAINT players_sex_id_fkey FOREIGN KEY (sex_id) REFERENCES public.sexs(id);
-
-
---
--- Name: players players_team_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.players
-    ADD CONSTRAINT players_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id);
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_pkey PRIMARY KEY (id);
 
 
 --
--- Name: teams teams_league_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: students_skills_skill_levels students_skills_skill_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.teams
-    ADD CONSTRAINT teams_league_id_fkey FOREIGN KEY (league_id) REFERENCES public.leagues(id);
+ALTER TABLE ONLY public.students_skills_skill_levels
+    ADD CONSTRAINT students_skills_skill_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: students students_user_id_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: students_applications_saved unique_student_saved_application; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_applications_saved
+    ADD CONSTRAINT unique_student_saved_application UNIQUE (student_id, application_id);
+
+
+--
+-- Name: students_skills_skill_levels unique_student_skill; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_skills_skill_levels
+    ADD CONSTRAINT unique_student_skill UNIQUE (student_id, skill_id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workdays workdays_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workdays
+    ADD CONSTRAINT workdays_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: applications_carrers applications_carrers_application_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_carrers
+    ADD CONSTRAINT applications_carrers_application_id_fkey FOREIGN KEY (application_id) REFERENCES public.applications(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications_carrers applications_carrers_carrer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_carrers
+    ADD CONSTRAINT applications_carrers_carrer_id_fkey FOREIGN KEY (carrer_id) REFERENCES public.carrers(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications applications_district_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications
+    ADD CONSTRAINT applications_district_id_fkey FOREIGN KEY (district_id) REFERENCES public.districts(id) ON DELETE SET NULL;
+
+
+--
+-- Name: applications applications_enterprise_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications
+    ADD CONSTRAINT applications_enterprise_id_fkey FOREIGN KEY (enterprise_id) REFERENCES public.enterprises(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications applications_modality_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications
+    ADD CONSTRAINT applications_modality_id_fkey FOREIGN KEY (modality_id) REFERENCES public.modalities(id) ON DELETE SET NULL;
+
+
+--
+-- Name: applications applications_sementer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications
+    ADD CONSTRAINT applications_sementer_id_fkey FOREIGN KEY (sementer_id) REFERENCES public.semesters(id) ON DELETE SET NULL;
+
+
+--
+-- Name: applications_skills applications_skills_application_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_skills
+    ADD CONSTRAINT applications_skills_application_id_fkey FOREIGN KEY (application_id) REFERENCES public.applications(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications_skills applications_skills_skill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_skills
+    ADD CONSTRAINT applications_skills_skill_id_fkey FOREIGN KEY (skill_id) REFERENCES public.skills(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications_students applications_students_application_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students
+    ADD CONSTRAINT applications_students_application_id_fkey FOREIGN KEY (application_id) REFERENCES public.applications(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications_students_reviews applications_students_reviews_applications_students_review_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students_reviews
+    ADD CONSTRAINT applications_students_reviews_applications_students_review_fkey FOREIGN KEY (applications_students_reviews) REFERENCES public.applications_students(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications_students applications_students_status_applications_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students
+    ADD CONSTRAINT applications_students_status_applications_student_id_fkey FOREIGN KEY (status_applications_student_id) REFERENCES public.status_applications_students(id) ON DELETE SET NULL;
+
+
+--
+-- Name: applications_students applications_students_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications_students
+    ADD CONSTRAINT applications_students_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.students(id) ON DELETE CASCADE;
+
+
+--
+-- Name: applications applications_workday_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.applications
+    ADD CONSTRAINT applications_workday_id_fkey FOREIGN KEY (workday_id) REFERENCES public.workdays(id) ON DELETE SET NULL;
+
+
+--
+-- Name: enterprises enterprises_district_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enterprises
+    ADD CONSTRAINT enterprises_district_id_fkey FOREIGN KEY (district_id) REFERENCES public.districts(id) ON DELETE SET NULL;
+
+
+--
+-- Name: enterprises enterprises_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.enterprises
+    ADD CONSTRAINT enterprises_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: experiences experiences_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.experiences
+    ADD CONSTRAINT experiences_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.students(id) ON DELETE CASCADE;
+
+
+--
+-- Name: links links_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.links
+    ADD CONSTRAINT links_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.students(id) ON DELETE CASCADE;
+
+
+--
+-- Name: logs logs_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: students_applications_saved students_applications_saved_application_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_applications_saved
+    ADD CONSTRAINT students_applications_saved_application_id_fkey FOREIGN KEY (application_id) REFERENCES public.applications(id) ON DELETE CASCADE;
+
+
+--
+-- Name: students_applications_saved students_applications_saved_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_applications_saved
+    ADD CONSTRAINT students_applications_saved_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.students(id) ON DELETE CASCADE;
+
+
+--
+-- Name: students students_carrere_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_carrere_id_fkey FOREIGN KEY (carrere_id) REFERENCES public.carrers(id) ON DELETE SET NULL;
+
+
+--
+-- Name: students students_district_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_district_id_fkey FOREIGN KEY (district_id) REFERENCES public.districts(id) ON DELETE SET NULL;
+
+
+--
+-- Name: students students_sementer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_sementer_id_fkey FOREIGN KEY (sementer_id) REFERENCES public.semesters(id) ON DELETE SET NULL;
+
+
+--
+-- Name: students_skills_skill_levels students_skills_skill_levels_skill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_skills_skill_levels
+    ADD CONSTRAINT students_skills_skill_levels_skill_id_fkey FOREIGN KEY (skill_id) REFERENCES public.skills(id) ON DELETE CASCADE;
+
+
+--
+-- Name: students_skills_skill_levels students_skills_skill_levels_skill_level_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_skills_skill_levels
+    ADD CONSTRAINT students_skills_skill_levels_skill_level_id_fkey FOREIGN KEY (skill_level_id) REFERENCES public.skill_levels(id) ON DELETE CASCADE;
+
+
+--
+-- Name: students_skills_skill_levels students_skills_skill_levels_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students_skills_skill_levels
+    ADD CONSTRAINT students_skills_skill_levels_student_id_fkey FOREIGN KEY (student_id) REFERENCES public.students(id) ON DELETE CASCADE;
+
+
+--
+-- Name: students students_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT students_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: users users_profile_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES public.profiles(id) ON DELETE SET NULL;
 
 
 --
@@ -719,27 +1386,5 @@ ALTER TABLE ONLY public.teams
 --
 
 INSERT INTO public.schema_migrations (version) VALUES
-    ('20240923001357'),
-    ('20240923001430'),
-    ('20240923001435'),
-    ('20240923001454'),
-    ('20240923001519'),
-    ('20240923001531'),
-    ('20240923001537'),
-    ('20240923001538'),
-    ('20240923001700'),
-    ('20240923001723'),
-    ('20240923001817'),
-    ('20240923001826'),
-    ('20240923014951'),
-    ('20240923015353'),
-    ('20240923020831'),
-    ('20240923023448'),
-    ('20240923023547'),
-    ('20240923031932'),
-    ('20240923052437'),
-    ('20240929033656'),
-    ('20240929053853'),
-    ('20240929054710'),
-    ('20240929061027'),
-    ('20240929061638');
+    ('20261020125131'),
+    ('20261020131225');

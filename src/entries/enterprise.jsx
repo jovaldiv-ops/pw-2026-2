@@ -15,8 +15,10 @@ import FooterEnterprise from '../partials/FooterEnterprise'
 import PanelEmpresa from '../pages/enterprise/PanelEmpresa'
 import MisConvocatorias from '../pages/enterprise/MisConvocatorias'
 import NuevaConvocatoria from '../pages/enterprise/NuevaConvocatoria'
+import CarrerasListado from '../pages/enterprise/CarrerasListado'
 
 import './enterprise.css'
+import DetalleCarrera from '../pages/enterprise/DetalleCarrera'
 
 function EnterpriseLayout() {
   return (
@@ -88,6 +90,10 @@ function App() {
         {/* Convocatorias */}
         <Route path="convocatorias" element={<MisConvocatorias />} />
         <Route path="convocatorias/nueva" element={<NuevaConvocatoria />} />
+        {/* Carreras */}
+        <Route path="carrers" element={<CarrerasListado />} />
+        <Route path="carrers/new" element={<DetalleCarrera />} />
+        <Route path="carrers/:id/edit" element={<DetalleCarrera />} />
         {/* Postulantes */}
         <Route path="postulantes" element={<Postulantes />} />
         {/* Empresa */} 

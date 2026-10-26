@@ -66,6 +66,15 @@ class CarrerRepository {
     try {
       return await Carrer.create(data);
     } catch (error) {
+      console.error('[CarrerRepo.create]', {
+        message: error.message,
+        name: error.name,
+        sql: error.sql,
+        code: error.parent?.code,
+        detail: error.parent?.detail,
+        table: error.parent?.table,
+        constraint: error.parent?.constraint,
+      });
       if (showLogs) console.error('🔥 [CarrerRepo.create] Error:', error);
       throw error;
     }

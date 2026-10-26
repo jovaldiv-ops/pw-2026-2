@@ -25,6 +25,10 @@ router.put('/api/v1/nations/:id', nationApis.updateNation);
 router.delete('/api/v1/nations/:id', nationApis.deleteNation);
 // api carrers
 router.get('/api/v1/carrers', carrerApis.listCarrers);
+router.post('/api/v1/carrers', carrerApis.createCarrer);
+router.get('/api/v1/carrers/:id', carrerApis.getCarrerById);
+router.put('/api/v1/carrers/:id', carrerApis.updateCarrer);
+router.delete('/api/v1/carrers/:id', carrerApis.deleteCarrer);
 // carrers
 router.get('/admin/carrers', carrers.home);
 router.get('/owner', soloLogueado, soloOwner, owners.home);
@@ -35,5 +39,8 @@ router.get('/enterprise/postulantes', soloLogueado, soloEnterprise, enterprises.
 router.get('/enterprise/perfil', soloLogueado, soloEnterprise, enterprises.home);
 router.get('/enterprise/resenas', soloLogueado, soloEnterprise, enterprises.home);
 router.get('/enterprise/cambiar-contrasena', soloLogueado, soloEnterprise, enterprises.home);
+router.get('/enterprise/carrers', soloLogueado, soloEnterprise, enterprises.home);
+router.get('/enterprise/carrers/new', soloLogueado, soloEnterprise, enterprises.home);
+router.get('/enterprise/carrers/:id/edit', soloLogueado, soloEnterprise, enterprises.home);
 
 export default router;
